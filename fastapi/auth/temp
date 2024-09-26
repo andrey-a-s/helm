@@ -1,4 +1,4 @@
-NAME: gateway
+NAME: auth
 LAST DEPLOYED: Thu Sep 26 13:35:44 2024
 NAMESPACE: rabbitmq
 STATUS: pending-install
@@ -13,10 +13,10 @@ autoscaling:
   maxReplicas: 100
   minReplicas: 1
   targetCPUUtilizationPercentage: 80
-fullnameOverride: gateway-service
+fullnameOverride: auth-service
 image:
   pullPolicy: IfNotPresent
-  repository: andreyas/gateway-service
+  repository: andreyas/auth-service
   tag: latest
 imagePullSecrets: []
 ingress:
@@ -25,7 +25,7 @@ ingress:
   className: nginx
   enabled: true
   hosts:
-  - host: gateway.dragon-monkey.ru
+  - host: auth.dragon-monkey.ru
     paths:
     - path: /
       pathType: Prefix
@@ -71,15 +71,15 @@ volumes:
 
 HOOKS:
 ---
-# Source: gateway/templates/tests/test-connection.yaml
+# Source: auth/templates/tests/test-connection.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "gateway-service-test-connection"
+  name: "auth-service-test-connection"
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -89,32 +89,32 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['gateway-service:5001']
+      args: ['auth-service:5001']
   restartPolicy: Never
 MANIFEST:
 ---
-# Source: gateway/templates/serviceaccount.yaml
+# Source: auth/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: gateway-service
+  name: auth-service
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
-# Source: gateway/templates/service.yaml
+# Source: auth/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway-service
+  name: auth-service
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -125,43 +125,43 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
 ---
-# Source: gateway/templates/backdeployment
+# Source: auth/templates/backdeployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-service
+  name: auth-service
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gateway
-      app.kubernetes.io/instance: gateway
+      app.kubernetes.io/name: auth
+      app.kubernetes.io/instance: auth
   template:
     metadata:
       labels:
-        helm.sh/chart: gateway-0.1.0
-        app.kubernetes.io/name: gateway
-        app.kubernetes.io/instance: gateway
+        helm.sh/chart: auth-0.1.0
+        app.kubernetes.io/name: auth
+        app.kubernetes.io/instance: auth
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
     spec:
-      serviceAccountName: gateway-service
+      serviceAccountName: auth-service
       securityContext:
         {}
       containers:
-        - name: gateway
+        - name: auth
           securityContext:
             {}
-          image: "andreyas/gateway-service:latest"
+          image: "andreyas/auth-service:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -190,40 +190,40 @@ spec:
             optional: true
           name: config
 ---
-# Source: gateway/templates/deployment.yaml
+# Source: auth/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-service
+  name: auth-service
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gateway
-      app.kubernetes.io/instance: gateway
+      app.kubernetes.io/name: auth
+      app.kubernetes.io/instance: auth
   template:
     metadata:
       labels:
-        helm.sh/chart: gateway-0.1.0
-        app.kubernetes.io/name: gateway
-        app.kubernetes.io/instance: gateway
+        helm.sh/chart: auth-0.1.0
+        app.kubernetes.io/name: auth
+        app.kubernetes.io/instance: auth
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
     spec:
-      serviceAccountName: gateway-service
+      serviceAccountName: auth-service
       securityContext:
         {}
       containers:
-        - name: gateway
+        - name: auth
           securityContext:
             {}
-          image: "andreyas/gateway-service:latest"
+          image: "andreyas/auth-service:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -252,15 +252,15 @@ spec:
             optional: true
           name: config
 ---
-# Source: gateway/templates/ingress.yaml
+# Source: auth/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gateway-service
+  name: auth-service
   labels:
-    helm.sh/chart: gateway-0.1.0
-    app.kubernetes.io/name: gateway
-    app.kubernetes.io/instance: gateway
+    helm.sh/chart: auth-0.1.0
+    app.kubernetes.io/name: auth
+    app.kubernetes.io/instance: auth
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -268,17 +268,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "gateway.dragon-monkey.ru"
+    - host: "auth.dragon-monkey.ru"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: gateway-service
+                name: auth-service
                 port:
                   number: 5001
 
 NOTES:
 1. Get the application URL by running these commands:
-  http://gateway.dragon-monkey.ru/
+  http://auth.dragon-monkey.ru/
