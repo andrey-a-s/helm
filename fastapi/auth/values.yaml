@@ -75,12 +75,12 @@ livenessProbe:
   httpGet:
     path: /docs
     port: 5000
-  initialDelaySeconds: 15
+  initialDelaySeconds: 30
 readinessProbe:
   httpGet:
     path: /docs
     port: 5000
-  initialDelaySeconds: 15
+  initialDelaySeconds: 30
 
 autoscaling:
   enabled: false
