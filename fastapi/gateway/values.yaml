@@ -41,7 +41,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 5001
+  port: 5000
 
 ingress:
   enabled: true
@@ -74,12 +74,12 @@ resources:
 livenessProbe:
   httpGet:
     path: /docs
-    port: 5001
+    port: 5000
   initialDelaySeconds: 15
 readinessProbe:
   httpGet:
     path: /docs
-    port: 5001
+    port: 5000
   initialDelaySeconds: 15
 
 autoscaling:
