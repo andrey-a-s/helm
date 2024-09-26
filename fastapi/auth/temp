@@ -1,0 +1,284 @@
+NAME: gateway
+LAST DEPLOYED: Thu Sep 26 13:35:44 2024
+NAMESPACE: rabbitmq
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+{}
+
+COMPUTED VALUES:
+affinity: {}
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fullnameOverride: gateway-service
+image:
+  pullPolicy: IfNotPresent
+  repository: andreyas/gateway-service
+  tag: latest
+imagePullSecrets: []
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  className: nginx
+  enabled: true
+  hosts:
+  - host: gateway.dragon-monkey.ru
+    paths:
+    - path: /
+      pathType: Prefix
+  tls: []
+livenessProbe:
+  httpGet:
+    path: /docs
+    port: 5001
+nameOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+readinessProbe:
+  httpGet:
+    path: /docs
+    port: 5001
+replicaCount: 1
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+securityContext: {}
+service:
+  port: 5001
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ""
+tolerations: []
+volumeMounts:
+- mountPath: /app/.env
+  name: config
+  readOnly: true
+  subPath: env
+volumes:
+- configmap:
+    name: env
+    optional: true
+  name: config
+
+HOOKS:
+---
+# Source: gateway/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "gateway-service-test-connection"
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['gateway-service:5001']
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: gateway/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gateway-service
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: true
+---
+# Source: gateway/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5001
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+---
+# Source: gateway/templates/backdeployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gateway
+      app.kubernetes.io/instance: gateway
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: gateway-0.1.0
+        app.kubernetes.io/name: gateway
+        app.kubernetes.io/instance: gateway
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: gateway-service
+      securityContext:
+        {}
+      containers:
+        - name: gateway
+          securityContext:
+            {}
+          image: "andreyas/gateway-service:latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5001
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 5001
+          readinessProbe:
+            httpGet:
+              path: /docs
+              port: 5001
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /app/.env
+              name: config
+              readOnly: true
+              subPath: env
+      volumes:
+        - configmap:
+            name: env
+            optional: true
+          name: config
+---
+# Source: gateway/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gateway
+      app.kubernetes.io/instance: gateway
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: gateway-0.1.0
+        app.kubernetes.io/name: gateway
+        app.kubernetes.io/instance: gateway
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: gateway-service
+      securityContext:
+        {}
+      containers:
+        - name: gateway
+          securityContext:
+            {}
+          image: "andreyas/gateway-service:latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5001
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 5001
+          readinessProbe:
+            httpGet:
+              path: /docs
+              port: 5001
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /app/.env
+              name: config
+              readOnly: true
+              subPath: env
+      volumes:
+        - configmap:
+            name: env
+            optional: true
+          name: config
+---
+# Source: gateway/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-service
+  labels:
+    helm.sh/chart: gateway-0.1.0
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/instance: gateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "gateway.dragon-monkey.ru"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-service
+                port:
+                  number: 5001
+
+NOTES:
+1. Get the application URL by running these commands:
+  http://gateway.dragon-monkey.ru/
