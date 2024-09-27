@@ -1,4 +1,5 @@
 spec:
   project: apps
   sources:
+      tag: 0.0.2
       targetRevision: 0.0.2
