@@ -1,4 +1,4 @@
-NAME: auth
+NAME: auth-service
 LAST DEPLOYED: Thu Sep 26 13:35:44 2024
 NAMESPACE: rabbitmq
 STATUS: pending-install
@@ -25,7 +25,7 @@ ingress:
   className: nginx
   enabled: true
   hosts:
-  - host: auth.dragon-monkey.ru
+  - host: auth-service.dragon-monkey.ru
     paths:
     - path: /
       pathType: Prefix
@@ -77,9 +77,9 @@ kind: Pod
 metadata:
   name: "auth-service-test-connection"
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -99,9 +99,9 @@ kind: ServiceAccount
 metadata:
   name: auth-service
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
@@ -112,9 +112,9 @@ kind: Service
 metadata:
   name: auth-service
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -125,8 +125,8 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
 ---
 # Source: auth/templates/backdeployment
 apiVersion: apps/v1
@@ -134,23 +134,23 @@ kind: Deployment
 metadata:
   name: auth-service
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: auth
-      app.kubernetes.io/instance: auth
+      app.kubernetes.io/name: auth-service
+      app.kubernetes.io/instance: auth-service
   template:
     metadata:
       labels:
-        helm.sh/chart: auth-0.1.0
-        app.kubernetes.io/name: auth
-        app.kubernetes.io/instance: auth
+        helm.sh/chart: auth-service-0.1.0
+        app.kubernetes.io/name: auth-service
+        app.kubernetes.io/instance: auth-service
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -158,7 +158,7 @@ spec:
       securityContext:
         {}
       containers:
-        - name: auth
+        - name: auth-service
           securityContext:
             {}
           image: "andreyas/auth-service:latest"
@@ -196,23 +196,23 @@ kind: Deployment
 metadata:
   name: auth-service
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: auth
-      app.kubernetes.io/instance: auth
+      app.kubernetes.io/name: auth-service
+      app.kubernetes.io/instance: auth-service
   template:
     metadata:
       labels:
-        helm.sh/chart: auth-0.1.0
-        app.kubernetes.io/name: auth
-        app.kubernetes.io/instance: auth
+        helm.sh/chart: auth-service-0.1.0
+        app.kubernetes.io/name: auth-service
+        app.kubernetes.io/instance: auth-service
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -220,7 +220,7 @@ spec:
       securityContext:
         {}
       containers:
-        - name: auth
+        - name: auth-service
           securityContext:
             {}
           image: "andreyas/auth-service:latest"
@@ -258,9 +258,9 @@ kind: Ingress
 metadata:
   name: auth-service
   labels:
-    helm.sh/chart: auth-0.1.0
-    app.kubernetes.io/name: auth
-    app.kubernetes.io/instance: auth
+    helm.sh/chart: auth-service-0.1.0
+    app.kubernetes.io/name: auth-service
+    app.kubernetes.io/instance: auth-service
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -268,7 +268,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "auth.dragon-monkey.ru"
+    - host: "auth-service.dragon-monkey.ru"
       http:
         paths:
           - path: /
@@ -281,4 +281,4 @@ spec:
 
 NOTES:
 1. Get the application URL by running these commands:
-  http://auth.dragon-monkey.ru/
+  http://auth-service.dragon-monkey.ru/
