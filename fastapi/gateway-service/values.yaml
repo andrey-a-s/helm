@@ -27,7 +27,7 @@ serviceAccount:
 
 podAnnotations:
   vault.hashicorp.com/agent-inject: "true"
-  vault.hashicorp.com/agent-inject-secret-helloworld: "secret/fastapi/env"
+  vault.hashicorp.com/agent-inject-secret-helloworld: "secrets/fastapi/env"
   vault.hashicorp.com/role: "gateway-service"
 podLabels: {}
 
