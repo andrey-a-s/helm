@@ -6,10 +6,9 @@ replicaCount: 1
 
 image:
   repository: andreyas/gateway-service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
-imagePullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "gateway-service"
