@@ -36,6 +36,8 @@ podAnnotations:
       {{- end -}}
 #  vault.hashicorp.com/secret-volume-path-env: "app/"
 #  vault.hashicorp.com/agent-inject-file-env: ".env"
+  vault.hashicorp.com/agent-inject-command-database.properties: |
+      ln /vault/secrets/.env /app/.env
   vault.hashicorp.com/role: "gateway-service"
 podLabels: {}
 
