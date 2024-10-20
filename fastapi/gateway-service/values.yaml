@@ -27,6 +27,7 @@ serviceAccount:
 
 podAnnotations:
   vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/agent-init-first: "true"
   vault.hashicorp.com/agent-inject-secret-env: "fastapi/env/env"
   vault.hashicorp.com/agent-inject-file-env: ".env"
   vault.hashicorp.com/secret-volume-path-env: "/app"
