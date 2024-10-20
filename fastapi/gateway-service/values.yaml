@@ -33,6 +33,7 @@ podAnnotations:
       {{- with secret "fastapi/env" -}}
       {{ base64Decode .Data.data.env }}
       {{- end -}}
+  vault.hashicorp.com/agent-inject-command-env: /bin/sh -c "cp /vault/secrets/env /app/.env"
 #  vault.hashicorp.com/secret-volume-path-env: "app/"
 #  vault.hashicorp.com/agent-inject-file-env: ".env"
   vault.hashicorp.com/role: "gateway-service"
