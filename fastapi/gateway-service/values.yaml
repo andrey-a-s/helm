@@ -4,8 +4,8 @@
 
 replicaCount: 1
 
-variables:
-  env: prod
+#variables:
+#  env: prod
 
 image:
   repository: andreyas/gateway-service
@@ -43,7 +43,6 @@ podAnnotations:
       export POSTGRES_USER="{{ .Data.data.POSTGRES_USER }}"
       export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
       export POSTGRES_PORT="{{ .Data.data.POSTGRES_PORT }}"
-
 #      {{ base64Decode .Data.data.env }}
       {{- end -}}
 #  vault.hashicorp.com/secret-volume-path-env: "app/"
