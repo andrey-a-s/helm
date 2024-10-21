@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+variables:
+  env: prod
+
 image:
   repository: andreyas/gateway-service
   pullPolicy: Always
