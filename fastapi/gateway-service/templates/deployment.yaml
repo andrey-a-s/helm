@@ -36,7 +36,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command:
-            - /bin/sh
+            - /bin/bash
           args:
             - '-c'
             - source /vault/secrets/prod && sleep 3600
