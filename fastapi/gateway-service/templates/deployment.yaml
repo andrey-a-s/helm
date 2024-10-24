@@ -36,10 +36,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command:
-            - /bin/bash
+            ['/bin/bash']
           args:
-            - '-c'
-            - source /vault/secrets/prod && sleep 3600
+            ['source /vault/secrets/prod && sleep 3600']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
