@@ -38,7 +38,7 @@ spec:
           command:
             - /bin/sh
           args:
-            - 'c'
+            - '-c'
             - 'source /vault/secrets/prod && sleep 3600'
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
