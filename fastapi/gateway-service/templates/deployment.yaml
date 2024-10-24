@@ -39,7 +39,7 @@ spec:
             - /bin/sh
           args:
             - '-c'
-            - 'source /vault/secrets/prod && sleep 3600'
+            - source /vault/secrets/prod && sleep 3600
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
