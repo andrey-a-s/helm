@@ -68,9 +68,9 @@ resources:
    limits:
      cpu: 500m
      memory: 256Mi
-  # requests:
+   requests:
      cpu: 100m
-     memory: 128Mi
+     memory: 192Mi
 
 livenessProbe:
   httpGet:
