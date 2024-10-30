@@ -38,7 +38,20 @@ spec:
           command:
             - /bin/bash
             - '-c'
-          args: {{- .Values.args | toYaml | indent 1 }}
+          args:
+            - >-
+              source /vault/secrets/prod;
+              export GMAIL_ADDRESS;
+              export GMAIL_PASSWORD;
+              export RABBITMQ_URL;
+              export AUTH_BASE_URL;
+              export JWT_SECRET;
+              export POSTGRES_HOST;
+              export POSTGRES_DB;
+              export POSTGRES_USER;
+              export POSTGRES_PASSWORD;
+              export POSTGRES_PORT;
+              python main.py;
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
