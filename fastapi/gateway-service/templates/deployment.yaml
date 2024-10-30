@@ -35,7 +35,9 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          command: ["/bin/bash", "-c", ]
+          command:
+            - /bin/bash
+            - '-c'
           args: {{- .Values.args | toYaml | indent 1 }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
