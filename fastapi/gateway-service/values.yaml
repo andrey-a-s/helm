@@ -16,18 +16,18 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "gateway-service"
 args: |
-source /vault/secrets/prod;
-export GMAIL_ADDRESS;
-export GMAIL_PASSWORD;
-export RABBITMQ_URL;
-export AUTH_BASE_URL;
-export JWT_SECRET;
-export POSTGRES_HOST;
-export POSTGRES_DB;
-export POSTGRES_USER;
-export POSTGRES_PASSWORD;
-export POSTGRES_PORT;
-python main.py;
+  source /vault/secrets/prod;
+  export GMAIL_ADDRESS;
+  export GMAIL_PASSWORD;
+  export RABBITMQ_URL;
+  export AUTH_BASE_URL;
+  export JWT_SECRET;
+  export POSTGRES_HOST;
+  export POSTGRES_DB;
+  export POSTGRES_USER;
+  export POSTGRES_PASSWORD;
+  export POSTGRES_PORT;
+  python main.py;
 
 serviceAccount:
   # Specifies whether a service account should be created
