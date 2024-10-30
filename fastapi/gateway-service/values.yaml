@@ -129,17 +129,17 @@ autoscaling:
 
 
 volumes: {}
-# - name: config
-#   configMap:
-#     name: env
-#     optional: false
+  # - name: config
+  #   configMap:
+  #     name: env
+  #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: {}
-# - name: config
-#   mountPath: "/app/.env"
-#   readOnly: true
-#   subPath: .env
+  # - name: config
+  #   mountPath: "/app/.env"
+  #   readOnly: true
+  #   subPath: .env
 
 nodeSelector: {}
 
