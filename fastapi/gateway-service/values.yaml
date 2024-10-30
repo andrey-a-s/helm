@@ -128,14 +128,14 @@ autoscaling:
 # Additional volumes on the output Deployment definition.
 
 
-#volumes:
+volumes: {}
 # - name: config
 #   configMap:
 #     name: env
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-#volumeMounts:
+volumeMounts: {}
 # - name: config
 #   mountPath: "/app/.env"
 #   readOnly: true
